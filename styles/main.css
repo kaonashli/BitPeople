@@ -1,0 +1,72 @@
+canvas{
+    background-color: lightcyan;
+    color: greenyellow;
+    display: none;
+}
+body{
+    font-family: "Courier New", serif;
+    background-color: #252525;
+    color: white;
+}
+.error{
+    color:darkred;
+    font-style: italic;
+    font-size: 20px;
+}
+#content{
+    width: 1000px;
+    margin: auto;
+}
+h1{
+    margin: 50px 0 0 0;
+    text-align: center;
+    font-size: 50px;
+}
+h4{
+    text-align: center;
+    margin: 0 0 30px 0;
+}
+select{
+    background-color: white;
+    font-family: "Courier New";
+    font-size: 25px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+#btnPlay{
+    padding: 5px 10px;
+    background-color: crimson;
+    color: white;
+    font-family: "Arial Black";
+    border: 3px crimson solid;
+    font-size: 25px;
+}
+#btnPlay:hover{
+    padding: 5px 10px;
+    background-color: #b5042e;
+    color: white;
+    font-family: "Arial Black";
+    border: 3px crimson solid;
+    font-size: 25px;
+}
+#btnBack{
+    margin-top: 20px;
+    padding: 5px 10px;
+    font-family: "Arial Black";
+    font-style: oblique;
+    color: #dcdcdc;;
+    background-color: #414141;
+    border: 2px solid #595959;
+    display: none;
+}
+#btnBack:hover{
+    padding: 5px 10px;
+    font-family: "Arial Black";
+    font-style: oblique;
+    color: #dcdcdc;
+    background-color: #2d2d2d;
+    border: 2px solid #4c4c4c;
+}
+canvas{
+    margin: auto;
+}

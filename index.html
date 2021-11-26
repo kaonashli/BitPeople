@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src=https://code.jquery.com/jquery-3.4.0.min.js
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="styles/main.css"/>
+    <title></title>
+</head>
+<body>
+
+<div id="content">
+    <h1>PARKOUR</h1>
+    <h4>in development</h4>
+    <div id="form">
+        <p>
+            <select id="ddlPlayer">
+                <option value="-1">SELECT A PLAYER</option>
+                <option value="0">AHMET</option>
+                <option value="1">ASHLEY</option>
+                <option value="2">CAMILLE</option>
+                <option value="3">OSMAN</option>
+            </select>
+        </p>
+        <p>
+            <button id="btnPlay" >Play!</button>
+        </p>
+        <span id="errorMsg" class="error"></span>
+    </div>
+
+    <canvas></canvas>
+<button id="btnBack">Back</button>
+</div>
+    <script src="js/game.js"></script> 
+</body>
+</html>
