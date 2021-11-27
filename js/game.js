@@ -1,9 +1,11 @@
 let $$ = sel => document.querySelector(sel);
+const BIT = 10;
+const SPACE = 3;
 let context;
 let player = -1;
 let canvas = {
     width: 900,
-    height: 200
+    height: 300
 };
 let animationID;
 let ashley = {
@@ -14,8 +16,8 @@ let ashley = {
     y: 100,
     xVelocity: 0,
     yVelocity: 0,
-    bit: 8,
-    height: 60,
+    bit: BIT,
+    height: BIT * 7,
     width: 30,
     color: {
         skin: '#FCE4D6',
@@ -31,7 +33,7 @@ let ashley = {
         drawHijab(this);
         drawSkin(this);
         drawEyes(this);
-        drawShirtWoman(this);
+        drawShirtShort(this);
         drawShoes(this);
         context.restore();
     }
@@ -44,8 +46,8 @@ let osman = {
     y: 100,
     xVelocity: 0,
     yVelocity: 0,
-    bit: 8,
-    height: 60,
+    bit: BIT,
+    height: BIT * 7,
     width: 30,
     color: {
         skin: '#FCE4D6',
@@ -58,7 +60,7 @@ let osman = {
         context.clearRect(0,0, canvas.width, canvas.height);
         context.translate(0, 0);
         context.save();
-        drawShirtMen(this);
+        drawShirtMedium(this);
         drawSkin(this);
         drawHairMan(this);
         drawEyes(this);
@@ -74,8 +76,8 @@ let ahmet = {
         y: 100,
         xVelocity: 0,
         yVelocity: 0,
-        bit: 8,
-        height: 60,
+        bit: BIT,
+        height: BIT *7,
         width: 30,
         color: {
             skin: '#FCE4D6',
@@ -88,7 +90,7 @@ let ahmet = {
             context.clearRect(0,0, canvas.width, canvas.height);
             context.translate(0, 0);
             context.save();
-            drawShirtMen(this);
+            drawShirtMedium(this);
             drawSkin(this);
             drawHairMan(this);
             drawEyes(this);
@@ -104,8 +106,8 @@ let camille = {
     y: 100,
     xVelocity: 0,
     yVelocity: 0,
-    bit: 8,
-    height: 60,
+    bit: BIT,
+    height: BIT * 7,
     width: 30,
     color: {
         skin: '#FCE4D6',
@@ -121,21 +123,46 @@ let camille = {
         drawHairWomanShort(this);
         drawSkinShort(this);
         drawEyesShort(this);
-        drawShirtWoman(this);
+        drawShirtShort(this);
         drawShoes(this);
         context.restore();
     }
 };
-let allPlayers = [ahmet, ashley, camille, osman];
-let cloud = {
-    color: 'white',
-    x: canvas.width + 20,
-    y: (Math.random()*20) + 20,
-    width: 15,
-    length: 25,
+let serge = {
+    jumping: true,
+    forward: true,
+    moving: true,
+    x: 100,
+    y: 100,
     xVelocity: 0,
-    yVelocity: 0
+    yVelocity: 0,
+    bit: BIT,
+    height: BIT * 7,
+    width: 30,
+    color: {
+        skin: '#FCE4D6',
+        nose: '#F8CBAD',
+        hair: '#332513',
+        shirt: '#FFC000',
+        eyes: 'black',
+        glasses: '#B4C6E7',
+        shoes: 'black'
+    },
+    draw: function() {
+        context.clearRect(0,0, canvas.width, canvas.height);
+        context.translate(0, 0);
+        context.save();
+        drawHairManTall(this);
+        drawSkinTall(this);
+        drawShirtTall(this);
+        drawNoseTall(this);
+        drawGlassesTall(this);
+
+        drawShoes(this);
+        context.restore();
+    }
 };
+let allPlayers = [ahmet, ashley, camille, osman, serge];
 
 function InitiateParameters(){
     $$("canvas").width = canvas.width;
@@ -208,6 +235,35 @@ function drawHairMan(dude){
     context.restore();
     context.closePath();
 }
+function drawHairManTall(dude){
+    context.beginPath();
+    context.save();
+    if (dude.forward){
+        // back >
+        context.rect(dude.x, dude.y - dude.bit, dude.bit,dude.bit);
+        context.rect(dude.x, dude.y, dude.bit, dude.bit);
+        // top >
+        for(let i = 1; i < 6; i++){
+            context.rect(dude.x + (dude.bit * i), dude.y - (dude.bit*2), dude.bit, dude.bit);
+            context.rect(dude.x + (dude.bit * (i-1)), dude.y - dude.bit, dude.bit, dude.bit)
+        }
+    }else{
+        context.rect(dude.x + (dude.bit * 6), dude.y -dude.bit, dude.bit,dude.bit);
+        context.rect(dude.x + (dude.bit * 6), dude.y, dude.bit, dude.bit);
+        // top >
+        for(let i = 1; i < 6; i++){
+            context.rect(dude.x + (dude.bit * i), dude.y - (dude.bit*2), dude.bit, dude.bit);
+            context.rect(dude.x + (dude.bit * (i+1)), dude.y - dude.bit, dude.bit, dude.bit)
+        }
+    }
+
+    context.fillStyle = dude.color.hair;
+    context.strokeStyle = dude.color.hair;
+    context.fill();
+    context.stroke();
+    context.restore();
+    context.closePath();
+}
 function drawHairWomanShort(dude){
     if (dude.forward){
         for(let i = 0; i < 5; i++) {
@@ -271,6 +327,39 @@ function drawSkin(dude){
     context.restore();
     context.closePath();
 }
+function drawSkinTall(dude){
+    context.beginPath();
+    context.save();
+    if(dude.forward) {
+        // forehead and mouth >
+        for (let i = 1; i < 5; i++) {
+            context.rect(dude.x + (dude.bit * i), dude.y , dude.bit, dude.bit);
+            context.rect(dude.x + (dude.bit * i), dude.y + (dude.bit * 2), dude.bit, dude.bit);
+        }
+        // eye level >
+        context.rect(dude.x + dude.bit, dude.y + dude.bit, dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + dude.bit, dude.bit, dude.bit);
+        // arm >
+        context.rect(dude.x + (dude.bit * 2), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+    }else{
+        // forehead and mouth >
+        for (let i = 1; i < 5; i++) {
+            context.rect(dude.x + (dude.bit * i) + dude.bit, dude.y , dude.bit, dude.bit);
+            context.rect(dude.x + (dude.bit * i) + dude.bit, dude.y + (dude.bit * 2), dude.bit, dude.bit);
+        }
+        // eye level >
+        context.rect(dude.x + (dude.bit * 3), dude.y + dude.bit, dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 5), dude.y + dude.bit , dude.bit, dude.bit);
+        // arm >
+        context.rect(dude.x + (dude.bit * 4), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+    }
+    context.fillStyle = dude.color.skin;
+    context.strokeStyle = dude.color.skin;
+    context.fill();
+    context.stroke();
+    context.restore();
+    context.closePath();
+}
 function drawSkinShort(dude){
     context.beginPath();
     context.save();
@@ -304,6 +393,18 @@ function drawSkinShort(dude){
     context.restore();
     context.closePath();
 }
+function drawNoseTall(dude){
+    context.beginPath();
+    context.save();
+    context.rect(dude.x + (dude.bit*3), dude.y + dude.bit, dude.bit, dude.bit);
+    context.fillStyle = dude.color.nose;
+    context.strokeStyle = dude.color.nose;
+    context.fill();
+    context.stroke();
+    context.restore();
+    context.closePath();
+
+}
 function drawEyes(dude){
     context.beginPath();
     context.save();
@@ -315,6 +416,29 @@ function drawEyes(dude){
     context.stroke();
     context.restore();
     context.closePath();
+}
+function drawGlassesTall(dude){
+    context.beginPath();
+    context.save();
+    context.rect(dude.x + (dude.bit*2), dude.y + dude.bit, dude.bit, dude.bit);
+    context.rect(dude.x + (dude.bit*4), dude.y + dude.bit, dude.bit, dude.bit);
+    context.fillStyle = dude.color.glasses;
+    context.strokeStyle = 'black';
+    context.fill();
+    context.stroke();
+    context.restore();
+    context.closePath();
+    context.beginPath();
+    if (dude.forward) {
+        context.moveTo(dude.x, dude.y + dude.bit);
+        context.lineTo(dude.x + (dude.bit * 4), dude.y + dude.bit);
+    }else{
+        context.moveTo(dude.x + (dude.bit*2), dude.y + dude.bit);
+        context.lineTo(dude.x + (dude.bit * 6), dude.y + dude.bit);
+    }
+    context.stroke();
+    context.closePath();
+
 }
 function drawEyesShort(dude){
     context.beginPath();
@@ -328,7 +452,24 @@ function drawEyesShort(dude){
     context.restore();
     context.closePath();
 }
-function drawShirtMen(dude){
+function drawShirtShort(dude){
+    context.beginPath();
+    context.save();
+    if (dude.forward){
+        context.rect(dude.x + (dude.bit*2), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit*3), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+    }else{
+        context.rect(dude.x + (dude.bit*3), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit*4), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+    }
+    context.fillStyle = dude.color.shirt;
+    context.strokeStyle = dude.color.shirt;
+    context.fill();
+    context.stroke();
+    context.restore();
+    context.closePath();
+}
+function drawShirtMedium(dude){
     context.beginPath();
     context.save();
     if (dude.forward) {
@@ -347,15 +488,21 @@ function drawShirtMen(dude){
     context.restore();
     context.closePath();
 }
-function drawShirtWoman(dude){
+function drawShirtTall(dude){
     context.beginPath();
     context.save();
-    if (dude.forward){
-        context.rect(dude.x + (dude.bit*2), dude.y + (dude.bit * 5), dude.bit, dude.bit);
-        context.rect(dude.x + (dude.bit*3), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+    if (dude.forward) {
+        context.rect(dude.x + (dude.bit * 2), dude.y + (dude.bit * 3), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + (dude.bit * 3), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 2), dude.y + (dude.bit * 4), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + (dude.bit * 4), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + (dude.bit * 5), dude.bit, dude.bit);
     }else{
-        context.rect(dude.x + (dude.bit*3), dude.y + (dude.bit * 5), dude.bit, dude.bit);
-        context.rect(dude.x + (dude.bit*4), dude.y + (dude.bit * 5), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + (dude.bit * 3), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 4), dude.y + (dude.bit * 3), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + (dude.bit * 4), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 4), dude.y + (dude.bit * 4), dude.bit, dude.bit);
+        context.rect(dude.x + (dude.bit * 3), dude.y + (dude.bit * 5), dude.bit, dude.bit);
     }
     context.fillStyle = dude.color.shirt;
     context.strokeStyle = dude.color.shirt;
@@ -390,18 +537,6 @@ function drawGrass(){
     context.stroke();
     context.closePath();
 }
-function drawCloud(){
-    context.beginPath();
-    context.save();
-    context.strokeStyle = cloud.color;
-    context.lineTo(cloud.x, cloud.y);
-    context.lineTo(cloud.x +cloud.length, cloud.y);
-    context.lineWidth = cloud.width;
-    context.lineCap = 'round';
-    context.stroke();
-    context.restore();
-    context.closePath();
-}
 
 let controller = {
     up: false,
@@ -425,7 +560,7 @@ let physics = function(){
     let currentPlayer = allPlayers[player];
     currentPlayer.moving = false;
     if (controller.up && !currentPlayer.jumping){
-        currentPlayer.yVelocity -= 20;
+        currentPlayer.yVelocity -= 35;
         currentPlayer.jumping = true;
     }
     if(controller.left){
@@ -456,14 +591,7 @@ let physics = function(){
         currentPlayer.x = - currentPlayer.width;
         currentPlayer.moving = true;
     }
-    cloud.xVelocity *= 0.7;
-    if (currentPlayer.moving){
-        cloud.xVelocity -= 0.5;
-    }
-    cloud.x += cloud.xVelocity;
-
     currentPlayer.draw();
-    drawCloud();
     window.requestAnimationFrame(physics)
 };
 $("#btnPlay").on("click", playGame);
@@ -478,7 +606,6 @@ function playGame(){
         $$('#btnBack').style.display='block';
         animationID = window.requestAnimationFrame(physics);
     }else{
-        console.log($$('#ddlPlayer').value + "ok") ;
         $$('#errorMsg').innerText = "Please select a player."
     }
 }
